@@ -1,0 +1,17 @@
+NER Phase:
+
+Input: "Patient has a history of type 2 diabetes and hypertension."
+NER Output: ["type 2 diabetes", "hypertension"]
+RAG Phase:
+
+The NER terms are passed into the retrieval component to pull related codes from the ICD-10 database or similar.
+Retrieve relevant documents or code suggestions (e.g., E11.9 for "type 2 diabetes" and I10 for "hypertension").
+Generation Phase:
+
+The generative model combines the retrieved data with the original medical terms to suggest the ICD-10 codes, highlighting the medical terms identified.
+Output: "For 'type 2 diabetes' the suggested ICD-10 code is E11.9. For 'hypertension', the recommended code is I10."
+Tools to Use:
+Hugging Face Transformers: Pre-trained NER models (e.g., SciBERT, POSOS).
+FAISS or ElasticSearch: For efficient document retrieval in the RAG pipeline.
+icd10-cm Python library: For ICD-10 lookup during the retrieval phase.
+By combining NER with RAG, you enhance the ability to extract relevant medical terms and generate highly accurate and contextually-grounded code recommendations.
