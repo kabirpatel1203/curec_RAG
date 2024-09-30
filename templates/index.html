@@ -6,37 +6,37 @@
     <title>Medical Term Processor</title>
     <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; }
-        textarea { width: 100%; height: 150px; }
-        .result { margin-top: 20px; border: 1px solid #ddd; padding: 10px; }
-        .error { color: red; font-weight: bold; }
+        textarea { width: 100%; height: 150px; margin-bottom: 10px; }
+        button { padding: 10px; }
+        .result { margin-top: 20px; }
+        .term { margin-bottom: 20px; }
+        .match { margin-left: 20px; }
     </style>
 </head>
 <body>
     <h1>Medical Term Processor</h1>
     <form method="POST">
-        <textarea name="medical_text" placeholder="Paste your medical text here...">{{ request.form['medical_text'] }}</textarea>
-        <br>
-        <input type="submit" value="Process">
+        <textarea name="medical_text" placeholder="Enter medical text here..."></textarea>
+        <button type="submit">Process</button>
     </form>
 
     {% if results %}
         <div class="result">
             <h2>Results:</h2>
-            {% if results.error %}
-                <p class="error">{{ results.error }}</p>
-            {% else %}
-                {% for term, matches in results.items() %}
-                    <h3>{{ term }}</h3>
-                    {% for match in matches %}
-                        <p>
-                            <strong>CODE:</strong> {{ match['CODE'] }}<br>
-                            <strong>Category:</strong> {{ match['Category'] }}<br>
-                            <strong>Medical term:</strong> {{ match['Medical term'] }}<br>
-                            <strong>Description:</strong> {{ match['Description'] }}
-                        </p>
+            {% for result in results %}
+                <div class="term">
+                    <h3>{{ result.Term }} (UMLS: {{ result.UMLS_Concept_ID }}, Category: {{ result.Category }})</h3>
+                    {% for match in result.Matches %}
+                        <div class="match">
+                            <p><strong>Type:</strong> {{ match.type }}</p>
+                            <p><strong>CODE:</strong> {{ match.CODE }}</p>
+                            <p><strong>Medical term:</strong> {{ match.Medical_term }}</p>
+                            <p><strong>Description:</strong> {{ match.Description }}</p>
+                            <p><strong>Score:</strong> {{ "%.2f"|format(match.Score) }}</p>
+                        </div>
                     {% endfor %}
-                {% endfor %}
-            {% endif %}
+                </div>
+            {% endfor %}
         </div>
     {% endif %}
 </body>
